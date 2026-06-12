@@ -43,11 +43,18 @@ const ogImageURL = new URL(ogImage, siteUrl).href;
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
       :root {
+        /* Rouge des illustrations : #FA1D02 */
+        --red: #fa1d02;
+        --red-dark: #c41601;     /* survol, focus */
+        --red-muted: #e8614e;    /* secondaire doux */
+        --red-tint: #fdf1ef;     /* fond très léger */
+        --red-border: #f5cfc9;   /* bordures teintées */
+
         --bg: #f8f6f1;
-        --text: #111111;
-        --muted: #666666;
-        --border: #d6d2c8;
-        --accent: #c0341c;
+        --text: #1a1008;         /* brun-noir chaud, plus bistrot que #111 */
+        --muted: #7a6a62;        /* gris chaud */
+        --border: #ddd8cf;
+        --accent: var(--red);
         --space-xs: 0.5rem;
         --space-sm: 0.875rem;
         --space-md: 1.25rem;
