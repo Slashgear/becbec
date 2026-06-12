@@ -1,0 +1,488 @@
+---
+import Layout from '../layouts/Layout.astro';
+import site from '../data/site.yaml';
+---
+
+<Layout
+  title={`${site.name} · ${site.tagline}`}
+  description={site.description}
+>
+  <div class="wrapper">
+
+    <!-- HEADER -->
+    <header class="header">
+      <a href="/" class="logo" aria-label="Becbec — accueil">
+        <img src="/favicon.png" alt="" width="28" height="29" class="logo-mark" loading="eager" />
+        <span class="logo-name">becbec</span>
+      </a>
+      <nav aria-label="Navigation principale">
+        <ul class="nav-list" role="list">
+          <li><a href="/menu">Menu</a></li>
+          <li><a href={`tel:${site.phone}`} class="nav-phone">{site.phone_display}</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="main" id="content">
+
+      <!-- IMAGE GAUCHE -->
+      <div class="img-col" aria-hidden="true">
+        {site.photo
+          ? <img src={site.photo} alt={site.photo_alt} class="bar-photo" />
+          : <div class="img-placeholder">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                <rect x="3" y="5" width="18" height="14" rx="2"/>
+                <circle cx="12" cy="12" r="3.5"/>
+                <path d="M9 5l1.5-2h3L15 5"/>
+              </svg>
+              <span>Ajouter une photo</span>
+            </div>
+        }
+      </div>
+
+      <!-- GRILLE INFOS -->
+      <div class="info-grid">
+
+        <!-- COLONNE 1 : Identité -->
+        <section class="col col-identity" aria-label="À propos">
+          <p class="tagline">{site.tagline}</p>
+          <p class="description">{site.description}</p>
+          <div class="badges" aria-label="Caractéristiques">
+            <span class="badge">Végétarien</span>
+            <span class="badge">Fait maison</span>
+            <span class="badge">Local &amp; saison</span>
+            <span class="badge">Bar</span>
+          </div>
+        </section>
+
+        <!-- COLONNE 2 : Horaires -->
+        <section class="col col-hours" aria-label="Horaires d'ouverture">
+          <h2 class="col-title">Horaires</h2>
+          <dl class="hours-list">
+            {site.hours.map((h: { days: string; open: string }) => (
+              <div class:list={["hours-row", h.open === "Fermé" ? "closed" : ""]}>
+                <dt class="hours-day">{h.days}</dt>
+                <dd class="hours-time">{h.open}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        <!-- COLONNE 3 : Adresse & Contact -->
+        <section class="col col-contact" aria-label="Adresse et contact">
+          <h2 class="col-title">Nous trouver</h2>
+          <address class="address">
+            <p>{site.address.street}</p>
+            <p>Lyon – {site.address.arrondissement}</p>
+            <a
+              href={site.address.maps_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="maps-link"
+            >
+              Voir sur Google Maps →
+            </a>
+          </address>
+
+          <div class="contact-actions">
+            <a href={`tel:${site.phone}`} class="btn btn-primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.79a16 16 0 0 0 6.3 6.3l.96-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+              {site.phone_display}
+            </a>
+            <a href="/menu" class="btn btn-secondary">Voir le menu</a>
+          </div>
+
+          <div class="groupe-teaser">
+            <p class="groupe-label">{site.groupe.label}</p>
+            <p class="groupe-desc">{site.groupe.description}</p>
+            <a href={`mailto:${site.email}`} class="link-underline">Nous contacter →</a>
+          </div>
+        </section>
+
+      </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <span>© {new Date().getFullYear()} Becbec</span>
+      <span class="footer-sep">·</span>
+      <a href="/menu">Menu</a>
+      <span class="footer-sep">·</span>
+      <a href={`tel:${site.phone}`}>{site.phone_display}</a>
+      <span class="footer-sep">·</span>
+      <a href={site.address.maps_url} target="_blank" rel="noopener noreferrer">Lyon 03</a>
+    </footer>
+
+  </div>
+</Layout>
+
+<style>
+  /* ── Layout shell ── */
+  .wrapper {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100dvh;
+  }
+
+  @media (min-width: 900px) {
+    .wrapper {
+      height: 100dvh;
+      overflow: hidden;
+    }
+  }
+
+  /* ── Header ── */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-md) var(--space-lg);
+    border-bottom: 1px solid var(--border);
+    gap: var(--space-md);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    text-decoration: none;
+  }
+
+  .logo-mark {
+    width: 28px;
+    height: 28px;
+    color: var(--text);
+    flex-shrink: 0;
+  }
+
+  .logo-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    font-family: var(--font-serif);
+  }
+
+  .nav-list {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    list-style: none;
+    font-size: 0.875rem;
+    letter-spacing: 0.03em;
+  }
+
+  .nav-phone {
+    font-weight: 600;
+    background: var(--text);
+    color: var(--bg);
+    padding: 0.4em 0.9em;
+    border-radius: var(--radius);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    transition: opacity 0.15s;
+  }
+
+  .nav-phone:hover { opacity: 0.8; }
+
+  /* ── Main layout : image | info-grid ── */
+  .main {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    overflow: hidden;
+  }
+
+  @media (min-width: 900px) {
+    .main {
+      grid-template-columns: 0.55fr 1fr;
+      overflow: hidden;
+    }
+  }
+
+  /* ── Image column ── */
+  .img-col {
+    position: relative;
+    overflow: hidden;
+    background: #e8e4db;
+    min-height: 220px;
+  }
+
+  @media (min-width: 900px) {
+    .img-col {
+      min-height: 0;
+      border-right: 1px solid var(--border);
+    }
+  }
+
+  .bar-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .img-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    color: #a09890;
+  }
+
+  .img-placeholder span {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ── Info grid (3 cols) ── */
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: var(--space-lg);
+    gap: var(--space-xl);
+  }
+
+  @media (min-width: 900px) {
+    .info-grid {
+      grid-template-columns: 1fr 0.85fr 1fr;
+      gap: var(--space-lg);
+      padding: var(--space-lg) var(--space-xl);
+      align-content: center;
+      overflow: hidden;
+    }
+  }
+
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  @media (min-width: 900px) {
+    .col + .col {
+      border-left: 1px solid var(--border);
+      padding-left: var(--space-lg);
+    }
+  }
+
+  .col-title {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ── Identity column ── */
+  .tagline {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .description {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--text);
+    max-width: 38ch;
+  }
+
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+  }
+
+  .badge {
+    font-size: 0.7rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+    padding: 0.25em 0.6em;
+    border-radius: var(--radius);
+    color: var(--muted);
+  }
+
+  .brunch-callout {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2em;
+    border-left: 3px solid var(--accent);
+    padding-left: var(--space-sm);
+    font-size: 0.875rem;
+  }
+
+  .brunch-callout strong {
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .brunch-callout span {
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+
+  /* ── Hours column ── */
+  .hours-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .hours-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-sm);
+    font-size: 0.875rem;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hours-row:last-child { border-bottom: none; }
+
+  .hours-row.closed .hours-day,
+  .hours-row.closed .hours-time {
+    color: var(--muted);
+  }
+
+  .hours-day {
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  .hours-time {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    color: var(--muted);
+  }
+
+  /* ── Contact column ── */
+  .address {
+    font-style: normal;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  .maps-link {
+    display: inline-block;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 0.25rem;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .maps-link:hover { color: var(--text); }
+
+  .contact-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    padding: 0.65em 1.2em;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: var(--radius);
+    text-align: center;
+    transition: opacity 0.15s;
+    letter-spacing: 0.02em;
+  }
+
+  .btn:hover { opacity: 0.8; }
+
+  .btn-primary {
+    background: var(--text);
+    color: var(--bg);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .btn-secondary:hover {
+    background: var(--text);
+    color: var(--bg);
+    opacity: 1;
+  }
+
+  .groupe-teaser {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35em;
+    padding: var(--space-sm);
+    background: rgba(0,0,0,0.03);
+    border-radius: var(--radius);
+  }
+
+  .groupe-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .groupe-desc {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .link-underline {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    padding: var(--space-sm) var(--space-lg);
+    border-top: 1px solid var(--border);
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .footer a:hover { color: var(--text); }
+  .footer-sep { color: var(--border); }
+
+  /* ── Mobile adjustments ── */
+  @media (max-width: 599px) {
+    .header {
+      padding: var(--space-sm) var(--space-md);
+    }
+    .nav-list {
+      gap: var(--space-md);
+    }
+    .main {
+      padding: var(--space-md);
+      gap: var(--space-lg);
+    }
+  }
+</style>

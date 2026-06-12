@@ -1,0 +1,44 @@
+name: "Becbec"
+photo: "/photo.jpg"
+photo_alt: "L'intérieur du Becbec, 232 rue Paul Bert Lyon 03"
+tagline: "Bistrot végétarien · Café · Bar"
+description: >
+  Le coin de table qui accueille votre café du matin, votre repas entre collègues
+  ou votre bière fraîche en fin de journée. Une cuisine simple, faite maison,
+  avec des produits frais et locaux. Nous suivons les saisons.
+
+brunch:
+  label: "Brunch le samedi"
+  note: "Réservation fortement conseillée"
+
+email: "becbeclyon@gmail.com"
+phone: "0659462947"
+phone_display: "06 59 46 29 47"
+
+address:
+  street: "232 rue Paul Bert"
+  city: "Lyon"
+  arrondissement: "03"
+  maps_url: "https://maps.google.com/?q=232+rue+Paul+Bert+Lyon+3"
+
+hours:
+  - days: "Mardi"
+    open: "8h – 17h30"
+  - days: "Mercredi"
+    open: "8h – 17h30"
+  - days: "Jeudi"
+    open: "8h – 23h"
+  - days: "Vendredi"
+    open: "8h – 23h"
+  - days: "Samedi"
+    open: "9h30 – 14h30"
+  - days: "Dimanche & Lundi"
+    open: "Fermé"
+
+groupe:
+  label: "Groupe & privatisation"
+  description: "De 10 à 50 personnes, nous accueillons tous vos événements. Réservation de salle entière ou partielle, menu traiteur sur-mesure, carte de bar adaptée."
+
+social:
+  instagram: ""
+  facebook: ""

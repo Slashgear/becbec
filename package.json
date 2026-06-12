@@ -1,0 +1,25 @@
+{
+  "name": "becbec",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "packageManager": "bun@1.3.14",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "generate-types": "wrangler types"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^13.7.0",
+    "@rollup/plugin-yaml": "^5.0.0",
+    "astro": "^6.4.6",
+    "wrangler": "^4.100.0"
+  },
+  "overrides": {
+    "vite": "^7"
+  }
+}

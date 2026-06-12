@@ -1,0 +1,313 @@
+---
+import Layout from '../layouts/Layout.astro';
+import site from '../data/site.yaml';
+import menu from '../data/menu.yaml';
+
+interface MenuItem {
+  name: string;
+  description: string;
+  price: string;
+}
+
+interface MenuCategory {
+  name: string;
+  available: string;
+  note?: string;
+  items: MenuItem[];
+}
+---
+
+<Layout
+  title={`Menu · ${site.name}`}
+  description={`Carte végétarienne de saison — ${site.name}, bistrot café bar à Lyon 03`}
+>
+  <div class="wrapper">
+
+    <header class="header">
+      <a href="/" class="logo" aria-label="Becbec — accueil">
+        <img src="/favicon.png" alt="" width="28" height="29" class="logo-mark" loading="eager" />
+        <span class="logo-name">becbec</span>
+      </a>
+      <nav aria-label="Navigation principale">
+        <ul class="nav-list" role="list">
+          <li><a href="/" class="nav-back">← Accueil</a></li>
+          <li><a href={`tel:${site.phone}`} class="nav-phone">{site.phone_display}</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="main" id="content">
+      <div class="menu-header">
+        <h1 class="page-title">Menu</h1>
+        <p class="menu-note">{menu.note}</p>
+        <p class="bar-note">{menu.bar_note}</p>
+      </div>
+
+      <div class="categories">
+        {(menu.categories as MenuCategory[]).map((cat) => (
+          <section class="category" aria-labelledby={`cat-${cat.name.toLowerCase().replace(/\s+/g, '-')}`}>
+            <div class="cat-header">
+              <h2 class="cat-name" id={`cat-${cat.name.toLowerCase().replace(/\s+/g, '-')}`}>
+                {cat.name}
+              </h2>
+              <span class="cat-available">{cat.available}</span>
+              {cat.note && <span class="cat-note">{cat.note}</span>}
+            </div>
+            <ul class="items-list" role="list">
+              {cat.items.map((item) => (
+                <li class="item">
+                  <div class="item-info">
+                    <span class="item-name">{item.name}</span>
+                    <span class="item-desc">{item.description}</span>
+                  </div>
+                  <span class="item-price">{item.price}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+    </main>
+
+    <footer class="footer">
+      <span>© {new Date().getFullYear()} Becbec</span>
+      <span class="footer-sep">·</span>
+      <a href="/">Accueil</a>
+      <span class="footer-sep">·</span>
+      <a href={`tel:${site.phone}`}>{site.phone_display}</a>
+      <span class="footer-sep">·</span>
+      <a href={site.address.maps_url} target="_blank" rel="noopener noreferrer">
+        {site.address.street}, Lyon {site.address.arrondissement}
+      </a>
+    </footer>
+
+  </div>
+</Layout>
+
+<style>
+  .wrapper {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100dvh;
+  }
+
+  /* ── Header (same as homepage) ── */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-md) var(--space-lg);
+    border-bottom: 1px solid var(--border);
+    gap: var(--space-md);
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 10;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  .logo-mark {
+    width: 28px;
+    height: 28px;
+    color: var(--text);
+  }
+
+  .logo-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    font-family: var(--font-serif);
+  }
+
+  .nav-list {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    list-style: none;
+    font-size: 0.875rem;
+  }
+
+  .nav-back {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .nav-back:hover { color: var(--text); }
+
+  .nav-phone {
+    font-weight: 600;
+    background: var(--text);
+    color: var(--bg);
+    padding: 0.4em 0.9em;
+    border-radius: var(--radius);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    transition: opacity 0.15s;
+  }
+
+  .nav-phone:hover { opacity: 0.8; }
+
+  /* ── Main ── */
+  .main {
+    max-width: 860px;
+    margin: 0 auto;
+    width: 100%;
+    padding: var(--space-xl) var(--space-lg);
+  }
+
+  .menu-header {
+    margin-bottom: var(--space-xl);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: var(--space-lg);
+  }
+
+  .page-title {
+    font-size: 2.5rem;
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    margin-bottom: var(--space-sm);
+  }
+
+  .menu-note {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 0.25rem;
+  }
+
+  .bar-note {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ── Categories ── */
+  .categories {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+
+  @media (min-width: 640px) {
+    .categories {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .category {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .cat-header {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    padding-bottom: var(--space-xs);
+    border-bottom: 2px solid var(--text);
+  }
+
+  .cat-name {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .cat-available {
+    font-size: 0.75rem;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+
+  .cat-note {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-left: auto;
+  }
+
+  /* ── Items ── */
+  .items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    list-style: none;
+  }
+
+  .item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-sm);
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .item:last-child { border-bottom: none; }
+
+  .item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    flex: 1;
+  }
+
+  .item-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .item-desc {
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  .item-price {
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    padding: var(--space-sm) var(--space-lg);
+    border-top: 1px solid var(--border);
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .footer a:hover { color: var(--text); }
+  .footer-sep { color: var(--border); }
+
+  @media (max-width: 599px) {
+    .header {
+      padding: var(--space-sm) var(--space-md);
+    }
+    .main {
+      padding: var(--space-lg) var(--space-md);
+    }
+    .page-title { font-size: 2rem; }
+  }
+</style>
