@@ -2,9 +2,17 @@
 interface Props {
   title: string;
   description?: string;
+  ogImage?: string;
 }
-const { title, description = "Bistrot végétarien · Café · Bar · Lyon 3" } = Astro.props;
+const {
+  title,
+  description = "Bistrot végétarien · Café · Bar · Lyon 3",
+  ogImage = "/favicon.png",
+} = Astro.props;
+
 const siteUrl = "https://becbec.fr";
+const canonicalURL = new URL(Astro.url.pathname, siteUrl).href;
+const ogImageURL = new URL(ogImage, siteUrl).href;
 ---
 
 <!doctype html>
@@ -12,13 +20,24 @@ const siteUrl = "https://becbec.fr";
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
     <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+
+    <link rel="canonical" href={canonicalURL} />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Becbec" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={siteUrl} />
-    <meta property="og:type" content="website" />
-    <meta name="theme-color" content="#111111" />
-    <link rel="icon" href="/favicon.png" type="image/png" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:locale" content="fr_FR" />
+
+    <meta name="theme-color" content="#f8f6f1" />
+
     <title>{title}</title>
     <style is:global>
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -29,7 +48,6 @@ const siteUrl = "https://becbec.fr";
         --muted: #666666;
         --border: #d6d2c8;
         --accent: #c0341c;
-        --ink: #111111;
         --space-xs: 0.5rem;
         --space-sm: 0.875rem;
         --space-md: 1.25rem;
@@ -69,9 +87,32 @@ const siteUrl = "https://becbec.fr";
         background: var(--text);
         color: var(--bg);
       }
+
+      /* Skip link */
+      .skip-link {
+        position: fixed;
+        top: -100%;
+        left: var(--space-md);
+        background: var(--text);
+        color: var(--bg);
+        padding: 0.6em 1.1em;
+        font-size: 0.875rem;
+        font-weight: 600;
+        border-radius: var(--radius);
+        z-index: 200;
+        transition: top 0.1s;
+        text-decoration: none;
+      }
+
+      .skip-link:focus {
+        top: var(--space-md);
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+      }
     </style>
   </head>
   <body>
+    <a href="#content" class="skip-link">Aller au contenu</a>
     <slot />
   </body>
 </html>

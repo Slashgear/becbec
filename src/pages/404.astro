@@ -1,0 +1,120 @@
+---
+import Layout from '../layouts/Layout.astro';
+import site from '../data/site.yaml';
+---
+
+<Layout title={`Page introuvable · ${site.name}`} description="Cette page n'existe pas.">
+  <div class="wrapper">
+
+    <header class="header">
+      <a href="/" class="logo" aria-label="Becbec — accueil">
+        <img src="/favicon.png" alt="" width="28" height="29" class="logo-mark" loading="eager" />
+        <span class="logo-name">becbec</span>
+      </a>
+    </header>
+
+    <main class="main" id="content">
+      <p class="code">404</p>
+      <h1 class="title">Page introuvable</h1>
+      <p class="message">Cette page n'existe pas ou a été déplacée.</p>
+      <div class="actions">
+        <a href="/" class="btn btn-primary">← Accueil</a>
+        <a href="/menu" class="btn btn-secondary">Voir le menu</a>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <a href={`tel:${site.phone}`}>{site.phone_display}</a>
+      <span class="sep">·</span>
+      <span>{site.address.street}, Lyon {site.address.arrondissement}</span>
+    </footer>
+
+  </div>
+</Layout>
+
+<style>
+  .wrapper {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    height: 100dvh;
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    padding: var(--space-md) var(--space-lg);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo { display: flex; align-items: center; gap: var(--space-xs); }
+  .logo-mark { width: 28px; height: 28px; }
+  .logo-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    font-family: var(--font-serif);
+  }
+
+  .main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-md);
+    padding: var(--space-xl);
+    text-align: center;
+  }
+
+  .code {
+    font-size: 5rem;
+    font-weight: 700;
+    font-family: var(--font-serif);
+    line-height: 1;
+    color: var(--border);
+  }
+
+  .title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-family: var(--font-serif);
+  }
+
+  .message {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .actions {
+    display: flex;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: var(--space-sm);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.65em 1.2em;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: var(--radius);
+    transition: opacity 0.15s;
+  }
+
+  .btn:hover { opacity: 0.8; }
+  .btn-primary { background: var(--text); color: var(--bg); }
+  .btn-secondary { border: 1px solid var(--border); }
+
+  .footer {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-xs);
+    padding: var(--space-sm);
+    border-top: 1px solid var(--border);
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .sep { color: var(--border); }
+</style>
