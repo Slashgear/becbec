@@ -9,6 +9,19 @@ export default defineConfig({
   output: 'static',
   adapter: cloudflare(),
   integrations: [sitemap()],
+  security: {
+    csp: {
+      directives: [
+        "default-src 'self'",
+        "img-src 'self'",
+        "frame-src 'none'",
+        "object-src 'none'",
+        "base-uri 'self'",
+        "form-action 'none'",
+        "frame-ancestors 'none'",
+      ],
+    },
+  },
   vite: {
     plugins: [yaml()],
   },
