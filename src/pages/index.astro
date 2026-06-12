@@ -144,6 +144,10 @@ import site from '../data/site.yaml';
       <a href={`tel:${site.phone}`}>{site.phone_display}</a>
       <span class="footer-sep">·</span>
       <a href={site.address.maps_url} target="_blank" rel="noopener noreferrer">Lyon 03</a>
+      {site.social.instagram && <>
+        <span class="footer-sep">·</span>
+        <a href={`https://instagram.com/${site.social.instagram}`} target="_blank" rel="noopener noreferrer">Instagram</a>
+      </>}
     </footer>
 
   </div>
