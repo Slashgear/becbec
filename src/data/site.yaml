@@ -1,3 +1,9 @@
+# Bannière d'information (décommenter pour activer)
+# banner:
+#   message: "Fermeture exceptionnelle le 25 juin — à bientôt !"
+#   # link: "https://..."   # optionnel : rend le message cliquable
+#   # type: alert           # "info" (défaut, discret) ou "alert" (rouge vif)
+
 name: "Becbec"
 photo: "/photo2.jpg"
 photo_alt: "Le comptoir du Becbec, bistrot végétarien au 232 rue Paul Bert Lyon 03"

@@ -139,3 +139,42 @@ groupe:
   label: "Groupe & privatisation"
   description: "De 10 à 50 personnes..."
 ```
+
+---
+
+## Afficher une bannière d'information
+
+Pour annoncer une fermeture exceptionnelle, une privatisation, un événement ponctuel…
+
+Dans `src/data/site.yaml`, décommenter et remplir la section `banner` (elle est déjà présente en haut du fichier) :
+
+```yaml
+banner:
+  message: "Fermeture exceptionnelle le 25 juin — à bientôt !"
+```
+
+**Options disponibles :**
+
+| Champ | Valeur | Description |
+|-------|--------|-------------|
+| `message` | texte | *(obligatoire)* Le message affiché |
+| `type` | `info` ou `alert` | `info` = bandeau discret (défaut) · `alert` = rouge vif, plus urgent |
+| `link` | URL | Rend le message cliquable (ex. un lien de réservation) |
+
+**Exemples :**
+
+```yaml
+# Fermeture simple
+banner:
+  message: "Fermé du 14 au 21 juillet — bonnes vacances !"
+
+# Privatisation, ton urgent, avec lien email
+banner:
+  message: "Soirée privée ce soir — nous rouvrons demain à 8h."
+  type: alert
+  link: "mailto:becbeclyon@gmail.com"
+```
+
+Pour **désactiver** la bannière : re-commenter ou supprimer la section `banner` dans le fichier.
+
+> Les visiteurs peuvent fermer la bannière avec le bouton ✕. Elle ne réapparaît pas tant que le texte n'a pas changé.

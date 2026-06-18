@@ -27,6 +27,11 @@ Tout le contenu est dans `src/data/` — pas besoin de toucher au code.
 Dans `src/data/site.yaml`, modifier les champs `open`, `schema_opens` et `schema_closes` de chaque jour.  
 Ces valeurs sont utilisées à la fois pour l'affichage et pour le JSON-LD (Google, Maps, agents IA).
 
+## Documentation
+
+- [Mettre à jour le contenu](docs/mise-a-jour-contenu.md) — horaires, menu, photo, bannière, etc.
+- [Déploiement](docs/deploiement.md) — architecture, Cloudflare Pages, CI/CD
+
 ## Développement
 
 ```bash
