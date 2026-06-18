@@ -15,7 +15,6 @@ Tout le contenu est dans `src/data/` — pas besoin de toucher au code.
 | Fichier | Contenu |
 |---------|---------|
 | `src/data/site.yaml` | Nom, description, horaires, adresse, téléphone, email, photo |
-| `src/data/menu.yaml` | Carte complète par catégorie |
 
 ### Changer la photo d'accueil
 
@@ -29,7 +28,7 @@ Ces valeurs sont utilisées à la fois pour l'affichage et pour le JSON-LD (Goog
 
 ## Documentation
 
-- [Mettre à jour le contenu](docs/mise-a-jour-contenu.md) — horaires, menu, photo, bannière, etc.
+- [Mettre à jour le contenu](docs/mise-a-jour-contenu.md) — horaires, photo, bannière, etc.
 - [Déploiement](docs/deploiement.md) — architecture, Cloudflare Pages, CI/CD
 
 ## Développement

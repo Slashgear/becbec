@@ -18,7 +18,6 @@ import site from '../data/site.yaml';
       </a>
       <nav aria-label="Navigation principale">
         <ul class="nav-list" role="list">
-          <li><a href="/menu">Menu</a></li>
           {site.social.instagram && <li>
             <a href={`https://instagram.com/${site.social.instagram}`} target="_blank" rel="noopener noreferrer" class="nav-instagram" aria-label="Instagram">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
@@ -106,7 +105,6 @@ import site from '../data/site.yaml';
               </svg>
               {site.phone_display}
             </a>
-            <a href="/menu" class="btn btn-secondary">Voir le menu</a>
           </div>
 
           <div class="groupe-teaser">
@@ -152,8 +150,6 @@ import site from '../data/site.yaml';
     <!-- FOOTER -->
     <footer class="footer">
       <span>© {new Date().getFullYear()} Becbec</span>
-      <span class="footer-sep">·</span>
-      <a href="/menu">Menu</a>
       <span class="footer-sep">·</span>
       <a href={`tel:${site.phone}`}>{site.phone_display}</a>
       <span class="footer-sep">·</span>

@@ -53,7 +53,6 @@ bun run build
 ```
 dist/client/
 ├── index.html          ← homepage
-├── menu/index.html     ← page menu
 ├── 404.html            ← page d'erreur
 ├── sitemap-index.xml   ← sitemap
 ├── sitemap-0.xml

@@ -1,12 +1,11 @@
 # Mettre à jour le contenu du site
 
-Tout le contenu du site est dans deux fichiers texte simples.
-Pas besoin de toucher au code — seuls ces fichiers sont à modifier.
+Tout le contenu du site est dans un fichier texte simple.
+Pas besoin de toucher au code — seul ce fichier est à modifier.
 
 | Fichier | Contenu |
 |---------|---------|
 | `src/data/site.yaml` | Horaires, adresse, téléphone, email, photo, Instagram |
-| `src/data/menu.yaml` | La carte complète (catégories et plats) |
 
 Une fois modifié et sauvegardé sur GitHub, **le site se met à jour automatiquement en 1 à 2 minutes**.
 
@@ -101,32 +100,6 @@ Pour masquer le lien Instagram, vider la valeur :
 ```yaml
   instagram: ""
 ```
-
----
-
-## Modifier la carte (menu)
-
-Dans `src/data/menu.yaml`, chaque catégorie ressemble à ceci :
-
-```yaml
-- name: "Petite faim"           ← nom de la catégorie
-  available: "Toute la journée" ← horaire de disponibilité
-  items:
-    - name: "Tartine du moment"
-      description: "Pain de campagne, garniture du jour"
-      price: "6€"
-    - name: "Soupe du jour"
-      description: "Selon arrivage, pain maison"
-      price: "7€"
-```
-
-**Ajouter un plat** : copier un bloc `- name: ...` et l'ajouter à la suite dans la bonne catégorie.
-
-**Supprimer un plat** : effacer les 4 lignes du bloc (`- name`, `description`, `price`).
-
-**Changer un prix** : modifier uniquement la ligne `price:`.
-
-> ⚠️ Respecter l'indentation (espaces) — YAML est sensible à l'alignement.
 
 ---
 
