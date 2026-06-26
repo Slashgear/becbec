@@ -8,109 +8,192 @@ const type = banner.type === 'alert' ? 'alert' : 'info';
 const id = `banner-${btoa(encodeURIComponent(banner.message)).slice(0, 16)}`;
 ---
 
-<div
-  class={`banner banner--${type}`}
+<dialog
   id={id}
-  role="alert"
-  aria-live="polite"
+  class={`modal modal--${type}`}
+  aria-label={banner.type === 'alert' ? 'Alerte' : 'Information'}
 >
-  <div class="banner-inner">
-    {banner.link
-      ? <a href={banner.link} class="banner-message banner-link">{banner.message}</a>
-      : <p class="banner-message">{banner.message}</p>
-    }
-    <button
-      class="banner-close"
-      aria-label="Fermer la bannière"
-      data-banner-id={id}
-    >
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+  <div class="modal-card">
+    <button class="modal-close" aria-label="Fermer" autofocus>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
         <line x1="18" y1="6" x2="6" y2="18"/>
         <line x1="6" y1="6" x2="18" y2="18"/>
       </svg>
     </button>
-  </div>
-</div>
 
-<script>
-  const btn = document.querySelector('[data-banner-id]') as HTMLButtonElement | null;
-  if (btn) {
-    const key = `dismissed:${btn.dataset.bannerId}`;
-    const banner = document.getElementById(btn.dataset.bannerId!);
-    if (localStorage.getItem(key)) {
-      banner?.remove();
+    {type === 'alert' && (
+      <div class="modal-icon" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+      </div>
+    )}
+
+    {banner.link
+      ? <a href={banner.link} class="modal-message modal-link">{banner.message}</a>
+      : <p class="modal-message">{banner.message}</p>
     }
-    btn.addEventListener('click', () => {
-      localStorage.setItem(key, '1');
-      banner?.remove();
-    });
+
+    <button class="modal-btn-close" onclick={`document.getElementById('${id}').close()`}>
+      Fermer
+    </button>
+  </div>
+</dialog>
+
+<script is:inline define:vars={{ id }}>
+  const dialog = /** @type {HTMLDialogElement} */ (document.getElementById(id));
+  const key = `dismissed:${id}`;
+
+  if (dialog && !localStorage.getItem(key)) {
+    dialog.showModal();
   }
+
+  const dismiss = () => {
+    localStorage.setItem(key, '1');
+    dialog?.close();
+  };
+
+  // Bouton × et bouton Fermer
+  dialog?.querySelectorAll('.modal-close, .modal-btn-close').forEach(btn => {
+    btn.addEventListener('click', dismiss);
+  });
+
+  // Clic sur le backdrop (en dehors de la card)
+  dialog?.addEventListener('click', (e) => {
+    if (e.target === dialog) dismiss();
+  });
+
+  // ESC natif du navigateur — on mémorise aussi le dismiss
+  dialog?.addEventListener('close', () => {
+    localStorage.setItem(key, '1');
+  });
 </script>
 
 <style>
-  .banner {
+  .modal {
+    border: none;
+    border-radius: 6px;
+    padding: 0;
+    max-width: min(480px, calc(100vw - 2rem));
     width: 100%;
-    font-size: 0.8rem;
-    font-weight: 500;
-    letter-spacing: 0.02em;
+    margin: auto;   /* le reset CSS global écrase le centrage natif du dialog */
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08);
   }
 
-  .banner--info {
-    background: var(--red-tint);
-    border-bottom: 1px solid var(--red-border);
-    color: var(--red-dark);
+  .modal::backdrop {
+    background: rgba(26, 16, 8, 0.55);
+    backdrop-filter: blur(2px);
   }
 
-  .banner--alert {
+  /* Animation d'entrée */
+  @keyframes modal-in {
+    from { opacity: 0; transform: translateY(12px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0)   scale(1); }
+  }
+
+  .modal[open] {
+    animation: modal-in 0.2s ease-out;
+  }
+
+  /* Thèmes */
+  .modal--info {
+    background: var(--bg);
+    color: var(--text);
+    border-top: 4px solid var(--red);
+  }
+
+  .modal--alert {
     background: var(--red);
     color: #fff;
   }
 
-  .banner-inner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-sm);
-    padding: 0.55rem var(--space-md);
+  /* Card intérieure */
+  .modal-card {
     position: relative;
-  }
-
-  .banner-message {
-    flex: 1;
+    padding: var(--space-lg) var(--space-lg) var(--space-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
     text-align: center;
-    margin: 0;
-    line-height: 1.4;
   }
 
-  .banner-link {
-    text-decoration: underline;
-    text-underline-offset: 3px;
+  /* Icône */
+  .modal-icon {
+    opacity: 0.9;
   }
 
-  .banner-link:hover { opacity: 0.8; }
-
-  .banner-close {
+  /* Bouton × en haut à droite */
+  .modal-close {
     position: absolute;
-    right: var(--space-md);
-    top: 50%;
-    transform: translateY(-50%);
+    top: var(--space-sm);
+    right: var(--space-sm);
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 1.75rem;
-    height: 1.75rem;
+    width: 2rem;
+    height: 2rem;
     background: transparent;
     border: none;
     cursor: pointer;
     border-radius: var(--radius);
-    opacity: 0.6;
-    transition: opacity 0.15s;
     color: inherit;
-    flex-shrink: 0;
+    opacity: 0.55;
+    transition: opacity 0.15s;
   }
 
-  .banner-close:hover { opacity: 1; }
-  .banner-close:focus-visible {
+  .modal-close:hover { opacity: 1; }
+
+  .modal-close:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+    opacity: 1;
+  }
+
+  /* Message */
+  .modal-message {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.45;
+    letter-spacing: 0.01em;
+  }
+
+  .modal-link {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .modal-link:hover { opacity: 0.8; }
+
+  /* Bouton Fermer */
+  .modal-btn-close {
+    margin-top: var(--space-xs);
+    padding: 0.5em 1.4em;
+    border-radius: var(--radius);
+    border: none;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    transition: opacity 0.15s;
+  }
+
+  .modal--info .modal-btn-close {
+    background: var(--red);
+    color: #fff;
+  }
+
+  .modal--alert .modal-btn-close {
+    background: #fff;
+    color: var(--red);
+  }
+
+  .modal-btn-close:hover { opacity: 0.85; }
+
+  .modal-btn-close:focus-visible {
     outline: 2px solid currentColor;
     outline-offset: 2px;
   }
