@@ -1,9 +1,9 @@
 # Bannière d'information — mettre active: true pour afficher
 banner:
   active: true
-  message: "Fermeture exceptionnelle le 25 juin — à bientôt !"
-  link: "https://google.fr"  # optionnel : rend le message cliquable
-  type: alert          # "info" (défaut, discret) ou "alert" (rouge vif)
+  message: "Fermeture exceptionnelle le 25 juin"
+  description: "Le bistrot sera fermé toute la journée du mercredi 25 juin. Nous reprenons le jeudi 26 à 8h comme d'habitude. Merci pour votre compréhension !"
+  type: alert
 
 name: "Becbec"
 photo: "/photo2.jpg"

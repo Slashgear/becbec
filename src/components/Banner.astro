@@ -36,6 +36,10 @@ const id = `banner-${btoa(encodeURIComponent(banner.message)).slice(0, 16)}`;
       : <p class="modal-message">{banner.message}</p>
     }
 
+    {banner.description && (
+      <p class="modal-description">{banner.description}</p>
+    )}
+
     <button class="modal-btn-close" onclick={`document.getElementById('${id}').close()`}>
       Fermer
     </button>
@@ -167,6 +171,26 @@ const id = `banner-${btoa(encodeURIComponent(banner.message)).slice(0, 16)}`;
   }
 
   .modal-link:hover { opacity: 0.8; }
+
+  /* Description longue */
+  .modal-description {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 1.6;
+    opacity: 0.85;
+    max-width: 36ch;
+  }
+
+  .modal--info .modal-description {
+    border-top: 1px solid var(--red-border);
+    padding-top: var(--space-sm);
+  }
+
+  .modal--alert .modal-description {
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
+    padding-top: var(--space-sm);
+  }
 
   /* Bouton Fermer */
   .modal-btn-close {
