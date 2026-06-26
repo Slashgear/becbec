@@ -43,34 +43,37 @@ Le fichier utilise le format YAML. Voici ce qu'il faut savoir :
 
 ### Bannière d'information
 
-La bannière s'affiche en haut de page. Elle est utile pour annoncer une fermeture, un événement, etc.
+La bannière s'affiche en modale au-dessus du site. Elle est utile pour annoncer une fermeture, un événement, etc.
 
-**Activer la bannière :**
+**Activer / désactiver :**
+
+```yaml
+banner:
+  active: true   # mettre false pour masquer
+  message: "Fermeture exceptionnelle mercredi 2 juillet — à bientôt !"
+```
+
+**Avec une description longue :**
 
 ```yaml
 banner:
   active: true
-  message: "Fermeture exceptionnelle mercredi 2 juillet — à bientôt !"
+  message: "Fermeture exceptionnelle le 25 juin"
+  description: "Le bistrot sera fermé toute la journée du mercredi 25 juin. Nous reprenons le jeudi 26 à 8h comme d'habitude. Merci pour votre compréhension !"
+  type: alert
 ```
 
-**Désactiver la bannière :**
-
-```yaml
-banner:
-  active: false
-  message: "Fermeture exceptionnelle mercredi 2 juillet — à bientôt !"
-```
-
-**Bannière avec un lien cliquable :**
+**Avec un lien cliquable (ex. réservation) :**
 
 ```yaml
 banner:
   active: true
-  message: "Réservation ouverte pour la soirée du 14 juillet !"
-  link: "https://www.google.fr"
+  message: "Soirée privatisée vendredi — réservez votre table !"
+  link: "mailto:becbeclyon@gmail.com"
+  type: info
 ```
 
-**Bannière rouge vif (alerte) vs bandeau discret (info) :**
+**Rouge vif (`alert`) vs fond clair (`info`) :**
 
 ```yaml
 # Rouge vif — urgence, fermeture
@@ -79,12 +82,14 @@ banner:
   message: "Fermé ce week-end"
   type: alert
 
-# Bandeau discret — info, événement
+# Fond clair — événement, info douce
 banner:
   active: true
   message: "Brunch spécial samedi 12 juillet"
   type: info
 ```
+
+Les visiteurs peuvent fermer la modale (bouton ✕, touche Échap, ou clic en dehors). Elle ne réapparaît pas jusqu'au prochain changement de message.
 
 ---
 
