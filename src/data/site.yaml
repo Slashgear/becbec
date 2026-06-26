@@ -25,7 +25,7 @@ address:
   street: "232 rue Paul Bert"
   city: "Lyon"
   arrondissement: "03"
-  maps_url: "https://maps.google.com/?q=232+rue+Paul+Bert+Lyon+3"
+  maps_url: "https://maps.google.com/?q=Becbec+Paul+Bert+Lyon+3"
 
 hours:
   - days: "Mardi"
