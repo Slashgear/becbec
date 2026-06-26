@@ -5,7 +5,8 @@ import cloudflare from '@astrojs/cloudflare';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://becbec.fr',
+  site: process.env.SITE_URL ?? 'https://becbec.fr',
+  base: process.env.BASE_PATH ?? '/',
   output: 'static',
   adapter: cloudflare(),
   integrations: [sitemap()],

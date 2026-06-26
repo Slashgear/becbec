@@ -31,6 +31,9 @@ jobs:
       - run: bun install --frozen-lockfile
 
       - run: bun run build
+        env:
+          SITE_URL: https://slashgear.github.io/becbec
+          BASE_PATH: /becbec
 
       - uses: actions/upload-pages-artifact@v3
         with:
