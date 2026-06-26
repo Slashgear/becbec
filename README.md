@@ -2,48 +2,222 @@
 
 Site du bistrot Becbec — Lyon 03.
 
-## Stack
+---
 
-- [Astro](https://astro.build) — static site generation
-- [Cloudflare Pages](https://pages.cloudflare.com) — hébergement
-- Bun — package manager
+## Mettre à jour le contenu
 
-## Contenu éditable
+Tout le contenu du site est dans un seul fichier : **`src/data/site.yaml`**
 
-Tout le contenu est dans `src/data/` — pas besoin de toucher au code.
+Pas besoin de toucher au code. Il suffit d'éditer ce fichier, de sauvegarder, et le site se met à jour automatiquement dans la minute.
 
-| Fichier | Contenu |
-|---------|---------|
-| `src/data/site.yaml` | Nom, description, horaires, adresse, téléphone, email, photo |
+### Comment éditer le fichier
 
-### Changer la photo d'accueil
+**Option 1 — Directement sur GitHub (recommandé, aucun outil à installer)**
 
-1. Déposer l'image dans `public/` (ex. `public/photo.jpg`)
-2. Dans `src/data/site.yaml`, mettre à jour `photo: /photo.jpg`
+1. Ouvrir [`src/data/site.yaml`](src/data/site.yaml) sur GitHub
+2. Cliquer sur l'icône crayon ✏️ en haut à droite du fichier
+3. Faire les modifications
+4. Cliquer sur **"Commit changes"** en bas de page
 
-### Changer les horaires
+Le site se redéploie automatiquement en ~1 minute.
 
-Dans `src/data/site.yaml`, modifier les champs `open`, `schema_opens` et `schema_closes` de chaque jour.  
-Ces valeurs sont utilisées à la fois pour l'affichage et pour le JSON-LD (Google, Maps, agents IA).
-
-## Documentation
-
-- [Mettre à jour le contenu](docs/mise-a-jour-contenu.md) — horaires, photo, bannière, etc.
-- [Déploiement](docs/deploiement.md) — architecture, Cloudflare Pages, CI/CD
-
-## Développement
+**Option 2 — En local**
 
 ```bash
 bun install
-bun run dev
+bun run dev   # http://localhost:4321
 ```
 
-## Déploiement
+---
+
+### Règles de base du format YAML
+
+Le fichier utilise le format YAML. Voici ce qu'il faut savoir :
+
+- Les **textes** s'écrivent entre guillemets : `"Mon texte"`
+- Les **valeurs oui/non** s'écrivent `true` ou `false`
+- **L'indentation compte** : ne pas décaler les lignes au hasard
+- Une ligne commençant par `#` est un commentaire, elle est ignorée
+
+---
+
+### Bannière d'information
+
+La bannière s'affiche en haut de page. Elle est utile pour annoncer une fermeture, un événement, etc.
+
+**Activer la bannière :**
+
+```yaml
+banner:
+  active: true
+  message: "Fermeture exceptionnelle mercredi 2 juillet — à bientôt !"
+```
+
+**Désactiver la bannière :**
+
+```yaml
+banner:
+  active: false
+  message: "Fermeture exceptionnelle mercredi 2 juillet — à bientôt !"
+```
+
+**Bannière avec un lien cliquable :**
+
+```yaml
+banner:
+  active: true
+  message: "Réservation ouverte pour la soirée du 14 juillet !"
+  link: "https://www.google.fr"
+```
+
+**Bannière rouge vif (alerte) vs bandeau discret (info) :**
+
+```yaml
+# Rouge vif — urgence, fermeture
+banner:
+  active: true
+  message: "Fermé ce week-end"
+  type: alert
+
+# Bandeau discret — info, événement
+banner:
+  active: true
+  message: "Brunch spécial samedi 12 juillet"
+  type: info
+```
+
+---
+
+### Horaires d'ouverture
+
+Chaque jour est une entrée dans la liste `hours`. Il y a deux parties à modifier :
+
+- `open` — le texte affiché sur le site
+- `schema_opens` / `schema_closes` — les heures en format 24h pour Google et Maps
+
+**Exemple — changer l'heure de fermeture du vendredi :**
+
+Avant :
+```yaml
+  - days: "Vendredi"
+    open: "8h – 23h"
+    schema_day: "Friday"
+    schema_opens: "08:00"
+    schema_closes: "23:00"
+```
+
+Après (fermeture à minuit) :
+```yaml
+  - days: "Vendredi"
+    open: "8h – minuit"
+    schema_day: "Friday"
+    schema_opens: "08:00"
+    schema_closes: "00:00"
+```
+
+**Exemple — marquer un jour comme fermé :**
+
+```yaml
+  - days: "Lundi"
+    open: "Fermé"
+```
+
+> Quand `open` vaut `"Fermé"`, inutile de mettre `schema_opens` et `schema_closes`.
+
+**Jours de la semaine en anglais** (pour `schema_day`) :
+`Monday` `Tuesday` `Wednesday` `Thursday` `Friday` `Saturday` `Sunday`
+
+---
+
+### Adresse
+
+```yaml
+address:
+  street: "232 rue Paul Bert"
+  city: "Lyon"
+  arrondissement: "03"
+  maps_url: "https://maps.google.com/?q=Becbec+Paul+Bert+Lyon+3"
+```
+
+Pour mettre à jour le lien Google Maps, chercher l'adresse sur [maps.google.com](https://maps.google.com), cliquer sur **Partager → Copier le lien**, et coller l'URL dans `maps_url`.
+
+---
+
+### Téléphone
+
+```yaml
+phone: "0659462947"           # utilisé pour le lien tel:
+phone_display: "06 59 46 29 47"  # texte affiché sur le site
+```
+
+Les deux champs doivent rester cohérents. `phone` est le numéro brut (sans espaces), `phone_display` est la version lisible.
+
+---
+
+### Email
+
+```yaml
+email: "becbeclyon@gmail.com"
+```
+
+---
+
+### Description
+
+```yaml
+description: >
+  Le coin de table qui accueille votre café du matin, votre repas entre collègues
+  ou votre bière fraîche en fin de journée. Une cuisine simple, faite maison,
+  avec des produits frais et locaux. Nous suivons les saisons.
+```
+
+Le `>` après `description:` signifie que le texte peut s'étaler sur plusieurs lignes. Chaque ligne doit rester indentée de 2 espaces.
+
+---
+
+### Photo principale
+
+1. Déposer la nouvelle photo dans le dossier `public/` (ex. `public/nouvelle-photo.jpg`)
+2. Mettre à jour dans `site.yaml` :
+
+```yaml
+photo: "/nouvelle-photo.jpg"
+photo_alt: "Description de la photo pour les lecteurs d'écran"
+```
+
+Formats supportés : `.jpg`, `.png`, `.webp`
+
+---
+
+### Instagram
+
+```yaml
+social:
+  instagram: "becbec.lyon"   # juste le nom du compte, sans @
+```
+
+---
+
+### Section groupe & privatisation
+
+```yaml
+groupe:
+  label: "Groupe & privatisation"
+  description: "De 10 à 50 personnes, nous accueillons tous vos événements. Réservation de salle entière ou partielle, menu traiteur sur-mesure, carte de bar adaptée."
+```
+
+---
+
+## Stack technique
+
+- [Astro 7](https://astro.build) — génération statique
+- [GitHub Pages](https://pages.github.com) — hébergement sur `becbec.slashgear.dev`
+- Bun — package manager
+
+## Développement local
 
 ```bash
-bun run build   # génère dist/
+bun install
+bun run dev      # http://localhost:4321 (hot reload)
+bun run build    # génère dist/
 ```
-
-Connecter le repo à Cloudflare Pages :
-- Build command : `bun run build`
-- Output directory : `dist`
