@@ -26,10 +26,19 @@ jobs:
         with:
           bun-version: latest
 
-      - uses: withastro/action@v6
+      - run: bun install --frozen-lockfile
+
+      - run: bun run build
         env:
-          SITE_URL: https://slashgear.github.io/becbec
-          BASE_PATH: /becbec
+          SITE_URL: https://becbec.slashgear.dev
+          BASE_PATH: /
+
+      # .nojekyll empêche Jekyll d'ignorer les dossiers _astro/
+      - run: touch dist/client/.nojekyll
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/client
 
   deploy:
     needs: build
