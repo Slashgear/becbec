@@ -48,30 +48,19 @@ const id = `banner-${btoa(encodeURIComponent(banner.message)).slice(0, 16)}`;
 
 <script is:inline define:vars={{ id }}>
   const dialog = /** @type {HTMLDialogElement} */ (document.getElementById(id));
-  const key = `dismissed:${id}`;
 
-  if (dialog && !localStorage.getItem(key)) {
+  if (dialog) {
     dialog.showModal();
   }
 
-  const dismiss = () => {
-    localStorage.setItem(key, '1');
-    dialog?.close();
-  };
+  const dismiss = () => dialog?.close();
 
-  // Bouton × et bouton Fermer
   dialog?.querySelectorAll('.modal-close, .modal-btn-close').forEach(btn => {
     btn.addEventListener('click', dismiss);
   });
 
-  // Clic sur le backdrop (en dehors de la card)
   dialog?.addEventListener('click', (e) => {
     if (e.target === dialog) dismiss();
-  });
-
-  // ESC natif du navigateur — on mémorise aussi le dismiss
-  dialog?.addEventListener('close', () => {
-    localStorage.setItem(key, '1');
   });
 </script>
 
