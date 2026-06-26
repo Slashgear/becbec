@@ -2,7 +2,7 @@
 import site from '../data/site.yaml';
 
 const banner = (site as any).banner;
-if (!banner?.message) return;
+if (!banner?.active || !banner?.message) return;
 
 const type = banner.type === 'alert' ? 'alert' : 'info';
 const id = `banner-${Buffer.from(banner.message).toString('base64').slice(0, 16)}`;
