@@ -4,11 +4,13 @@ import yaml from '@rollup/plugin-yaml';
 import cloudflare from '@astrojs/cloudflare';
 import sitemap from '@astrojs/sitemap';
 
+const isDevMode = process.env.DEV_MODE === 'true';
+
 export default defineConfig({
   site: process.env.SITE_URL ?? 'https://becbec.fr',
   base: process.env.BASE_PATH ?? '/',
   output: 'static',
-  adapter: cloudflare(),
+  adapter: isDevMode ? undefined : cloudflare(),
   integrations: [sitemap()],
   security: {
     csp: {
