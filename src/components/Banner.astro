@@ -5,7 +5,7 @@ const banner = (site as any).banner;
 if (!banner?.active || !banner?.message) return;
 
 const type = banner.type === 'alert' ? 'alert' : 'info';
-const id = `banner-${Buffer.from(banner.message).toString('base64').slice(0, 16)}`;
+const id = `banner-${btoa(encodeURIComponent(banner.message)).slice(0, 16)}`;
 ---
 
 <div
