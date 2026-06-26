@@ -35,6 +35,8 @@ jobs:
           SITE_URL: https://slashgear.github.io/becbec
           BASE_PATH: /becbec
 
+      - run: touch dist/client/.nojekyll
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist/client
