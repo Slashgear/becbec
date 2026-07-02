@@ -40,16 +40,16 @@ const id = `banner-${btoa(encodeURIComponent(banner.message)).slice(0, 16)}`;
       <p class="modal-description">{banner.description}</p>
     )}
 
-    <button class="modal-btn-close" onclick={`document.getElementById('${id}').close()`}>
+    <button class="modal-btn-close">
       Fermer
     </button>
   </div>
 </dialog>
 
-<script is:inline define:vars={{ id }}>
-  const dialog = /** @type {HTMLDialogElement} */ (document.getElementById(id));
+<script>
+  const dialog = document.querySelector('dialog.modal');
 
-  if (dialog) {
+  if (dialog instanceof HTMLDialogElement) {
     dialog.showModal();
   }
 
