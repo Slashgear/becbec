@@ -1,7 +1,7 @@
 # Bannière d'information — mettre active: true pour afficher
 banner:
   active: true
-  message: "Attention, nous réduisons nos horaires à partir du 20 juillet! "
+  message: "Attention, nous réduisons nos horaires à partir du 20 juillet!"
   description: "Le bistrot passe en mode été, see you sous les sunlights des tropiques 😎🎹"
 
 name: "Becbec"
