@@ -216,7 +216,7 @@ groupe:
 ## Stack technique
 
 - [Astro 7](https://astro.build) — génération statique
-- [GitHub Pages](https://pages.github.com) — hébergement sur `becbec.slashgear.dev`
+- [GitHub Pages](https://pages.github.com) — hébergement sur `www.becbec.fr`
 - Bun — package manager
 
 ## Développement local
@@ -226,3 +226,29 @@ bun install
 bun run dev      # http://localhost:4321 (hot reload)
 bun run build    # génère dist/
 ```
+
+---
+
+## DNS — faire fonctionner `becbec.fr` en plus de `www.becbec.fr`
+
+Aujourd'hui seul `www.becbec.fr` fonctionne (domaine canonique configuré dans les réglages GitHub Pages, certificat HTTPS approuvé). `becbec.fr` sans le www n'a aucun enregistrement DNS et ne résout pas.
+
+Pour activer les deux, ajouter chez le registrar/DNS de `becbec.fr` des enregistrements A pour l'apex, pointant vers les IP de GitHub Pages :
+
+```
+becbec.fr.   A   185.199.108.153
+becbec.fr.   A   185.199.109.153
+becbec.fr.   A   185.199.110.153
+becbec.fr.   A   185.199.111.153
+```
+
+Optionnel (IPv6) :
+
+```
+becbec.fr.   AAAA   2606:50c0:8000::153
+becbec.fr.   AAAA   2606:50c0:8001::153
+becbec.fr.   AAAA   2606:50c0:8002::153
+becbec.fr.   AAAA   2606:50c0:8003::153
+```
+
+Comme `www.becbec.fr` reste le domaine canonique côté GitHub Pages, une fois ces enregistrements propagés, GitHub redirige automatiquement `becbec.fr` → `www.becbec.fr` (301) — rien à faire côté code.
