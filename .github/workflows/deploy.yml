@@ -29,9 +29,6 @@ jobs:
       - run: bun install --frozen-lockfile
 
       - run: bun run build
-        env:
-          SITE_URL: https://becbec.slashgear.dev
-          BASE_PATH: /
 
       # .nojekyll empêche Jekyll d'ignorer les dossiers _astro/
       - run: touch dist/client/.nojekyll

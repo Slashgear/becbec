@@ -7,7 +7,7 @@ import sitemap from '@astrojs/sitemap';
 const isDevMode = process.env.DEV_MODE === 'true';
 
 export default defineConfig({
-  site: process.env.SITE_URL ?? 'https://becbec.fr',
+  site: process.env.SITE_URL ?? 'https://www.becbec.fr',
   base: process.env.BASE_PATH ?? '/',
   output: 'static',
   adapter: isDevMode ? undefined : cloudflare(),
