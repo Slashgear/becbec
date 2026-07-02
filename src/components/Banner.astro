@@ -105,7 +105,7 @@ const id = `banner-${btoa(encodeURIComponent(banner.message)).slice(0, 16)}`;
   /* Card intérieure */
   .modal-card {
     position: relative;
-    padding: var(--space-lg) var(--space-lg) var(--space-md);
+    padding: calc(var(--space-lg) + var(--space-sm)) calc(var(--space-lg) + var(--space-sm)) var(--space-md);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -152,6 +152,7 @@ const id = `banner-${btoa(encodeURIComponent(banner.message)).slice(0, 16)}`;
     font-weight: 600;
     line-height: 1.45;
     letter-spacing: 0.01em;
+    text-wrap: pretty;
   }
 
   .modal-link {
