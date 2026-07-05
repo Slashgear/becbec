@@ -5,12 +5,33 @@ const banner = (site as any).banner;
 if (!banner?.active || !banner?.message) return;
 
 const type = banner.type === 'alert' ? 'alert' : 'info';
-const id = `banner-${btoa(encodeURIComponent(banner.message)).slice(0, 16)}`;
+
+// Contenu servi uniquement au client (voir <script> plus bas) : les crawlers
+// qui ne relaient pas de JS ne voient donc jamais ce texte dans le HTML.
+const payload = {
+  message: banner.message,
+  description: banner.description ?? null,
+  link: banner.link ?? null,
+};
+const payloadJson = JSON.stringify(payload).replace(/</g, '\\u003c');
+
+// Hash stable du contenu : sert d'id et de clé de dédoublonnage côté client.
+// Il change dès que le contenu de la bannière change dans site.yaml.
+function hashContent(str: string) {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) {
+    h = (Math.imul(31, h) + str.charCodeAt(i)) | 0;
+  }
+  return (h >>> 0).toString(36);
+}
+const contentHash = hashContent(type + JSON.stringify(payload));
+const id = `banner-${contentHash}`;
 ---
 
 <dialog
   id={id}
   class={`modal modal--${type}`}
+  data-banner-hash={contentHash}
   aria-label={banner.type === 'alert' ? 'Alerte' : 'Information'}
 >
   <div class="modal-card">
@@ -32,25 +53,76 @@ const id = `banner-${btoa(encodeURIComponent(banner.message)).slice(0, 16)}`;
     )}
 
     {banner.link
-      ? <a href={banner.link} class="modal-message modal-link">{banner.message}</a>
-      : <p class="modal-message">{banner.message}</p>
+      ? <a href={banner.link} class="modal-message modal-link" data-field="message"></a>
+      : <p class="modal-message" data-field="message"></p>
     }
 
-    {banner.description && (
-      <p class="modal-description">{banner.description}</p>
-    )}
+    <p class="modal-description" data-field="description" hidden></p>
 
     <button class="modal-btn-close">
       Fermer
     </button>
   </div>
+
+  <script type="application/json" set:html={payloadJson} />
 </dialog>
 
 <script>
+  const STORAGE_KEY = 'becbec-banner-seen';
+  const SNOOZE_MS = 30 * 60 * 1000; // 30 min
+
+  // Bots de moteurs de recherche / crawlers SEO / previews réseaux sociaux :
+  // on ne leur affiche jamais la bannière ni ne la laisse dans le DOM.
+  const BOT_UA = /bot|crawl|spider|slurp|mediapartners|facebookexternalhit|whatsapp|telegrambot|discordbot|slackbot|embedly|quora link preview|pinterest|vkshare|w3c_validator|lighthouse|headlesschrome|semrush|ahrefs|mj12bot|dotbot|petalbot/i;
+
   const dialog = document.querySelector('dialog.modal');
 
   if (dialog instanceof HTMLDialogElement) {
-    dialog.showModal();
+    const isBot = BOT_UA.test(navigator.userAgent);
+
+    if (isBot) {
+      dialog.remove();
+    } else {
+      const hash = dialog.dataset.bannerHash ?? '';
+      let alreadySeen = false;
+
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        const seen = raw ? JSON.parse(raw) : null;
+        alreadySeen = !!seen && seen.hash === hash && Date.now() - seen.ts < SNOOZE_MS;
+      } catch {
+        // localStorage indisponible (navigation privée...) : on affiche par défaut
+      }
+
+      if (alreadySeen) {
+        dialog.remove();
+      } else {
+        const dataEl = dialog.querySelector('script[type="application/json"]');
+        const data = dataEl ? JSON.parse(dataEl.textContent || '{}') : {};
+
+        const messageEl = dialog.querySelector('[data-field="message"]');
+        if (messageEl) {
+          messageEl.textContent = data.message ?? '';
+          if (data.link && messageEl instanceof HTMLAnchorElement) {
+            messageEl.href = data.link;
+          }
+        }
+
+        const descriptionEl = dialog.querySelector('[data-field="description"]');
+        if (descriptionEl instanceof HTMLElement && data.description) {
+          descriptionEl.textContent = data.description;
+          descriptionEl.hidden = false;
+        }
+
+        dialog.showModal();
+
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify({ hash, ts: Date.now() }));
+        } catch {
+          // tant pis, la bannière réapparaîtra au prochain chargement
+        }
+      }
+    }
   }
 
   const dismiss = () => dialog?.close();
