@@ -10,8 +10,7 @@ photo_alt: "Le comptoir du Becbec, bistrot végétarien au 232 rue Paul Bert Lyo
 tagline: "Bistrot végétarien · Café · Bar"
 description: >
   Le coin de table qui accueille votre café du matin, votre repas entre collègues
-  ou votre bière fraîche en fin de journée. Une cuisine simple, faite maison,
-  avec des produits frais et locaux. Nous suivons les saisons.
+  ou votre bière fraîche en fin de journée. Une cuisine simple, goûteuse et faite maison,végétarienne et décadente !
 
 brunch:
   label: "Brunch le samedi"
@@ -29,30 +28,28 @@ address:
 
 hours:
   - days: "Mardi"
-    open: "8h – 17h30"
+    open: "8:00 – 14:30"
     schema_day: "Tuesday"
     schema_opens: "08:00"
     schema_closes: "17:30"
   - days: "Mercredi"
-    open: "8h – 17h30"
+    open: "8:00 – 14:30"
     schema_day: "Wednesday"
     schema_opens: "08:00"
-    schema_closes: "17:30"
+    schema_closes: "14:30"
   - days: "Jeudi"
-    open: "8h – 23h"
+    open: "8:00 – 14:30"
     schema_day: "Thursday"
     schema_opens: "08:00"
-    schema_closes: "23:00"
+    schema_closes: "14:30"
   - days: "Vendredi"
-    open: "8h – 23h"
+    open: "8:00 – 14:30"
     schema_day: "Friday"
     schema_opens: "08:00"
-    schema_closes: "23:00"
-  - days: "Samedi"
-    open: "9h30 – 14h30"
-    schema_day: "Saturday"
-    schema_opens: "09:30"
     schema_closes: "14:30"
+  - days: "Samedi"
+    open: "Fermé"
+    schema_day: "Saturday"
   - days: "Dimanche & Lundi"
     open: "Fermé"
 
