@@ -1,6 +1,6 @@
 # Bannière d'information — mettre active: true pour afficher
 banner:
-  active: true
+  active: 
   message: "Attention, nous réduisons nos horaires à partir du 28 juillet!"
   description: "Jusqu'à fin août, nous serons ouverts du mardi au vendredi de 8:00 à 14:30"
 
