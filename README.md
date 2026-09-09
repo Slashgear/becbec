@@ -213,6 +213,50 @@ groupe:
 
 ---
 
+### Agenda (soirées au bar)
+
+L'agenda s'affiche en **section pleine largeur sous le hero** de la page d'accueil. Chaque événement devient une carte avec la date, l'heure, le titre et une courte description. En bas, un bouton **« Réserver par téléphone »** ouvre directement l'appel vers le numéro du bar.
+
+**Afficher / masquer la section :**
+
+```yaml
+agenda:
+  active: true   # false pour cacher toute la section agenda
+```
+
+**Ajouter un événement :** chaque ligne `-` sous `events:` est un événement.
+
+```yaml
+agenda:
+  active: true
+  events:
+    - title: "Soirée Blind Test"
+      date: "Vendredi 25 septembre"
+      time: "20h"
+      note: "Venez tester vos connaissances musicales autour d'un verre."
+    - title: "Concert acoustique"
+      date: "Vendredi 2 octobre"
+      time: "20h30"
+      note: "Session live au coin du bar."
+```
+
+Les champs :
+- `title` — le nom de l'événement (obligatoire)
+- `date` — le jour de l'événement (obligatoire)
+- `time` — l'heure (obligatoire)
+- `note` — une courte description (optionnel, retiré si absent)
+
+**Combien d'événements afficher :**
+- **0 événement** (ou `active: false`) → la section agenda ne s'affiche pas du tout
+- **1 événement** → une seule carte, centrée sur la ligne
+- **2 événements** → deux cartes côte à côte, centrées
+- **3 événements** → trois cartes sur une ligne
+- **4 à 6 événements** → les cartes passent à la ligne suivante (maximum 6 affichées)
+
+> Les visiteurs s'inscrivent simplement en appelant : le bouton « Réserver par téléphone » utilise automatiquement le champ `phone` du fichier. Aucun système d'inscription en ligne n'est nécessaire.
+
+---
+
 ## Stack technique
 
 - [Astro 7](https://astro.build) — génération statique

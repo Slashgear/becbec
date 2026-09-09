@@ -55,6 +55,25 @@ hours:
   - days: "Dimanche & Lundi"
     open: "Fermé"
 
+# Agenda — liste des événements à venir au bar
+# Pour s'inscrire : il suffit d'appeler et de réserver.
+agenda:
+  # active: true pour afficher la section agenda sur la page d'accueil
+  active: true
+  events:
+    - title: "Soirée Blind Test"
+      date: "Vendredi 25 septembre"
+      time: "20h"
+      note: "Venez tester vos connaissances musicales autour d'un verre."
+    - title: "Concert acoustique"
+      date: "Vendredi 2 octobre"
+      time: "20h30"
+      note: "Session live au coin du bar."
+    - title: "Dégustation de vins nature"
+      date: "Samedi 10 octobre"
+      time: "18h"
+      note: "Assemblage de producteurs locaux."
+
 groupe:
   label: "Groupe & privatisation"
   description: "De 10 à 50 personnes, nous accueillons tous vos événements. Réservation de salle entière ou partielle, menu traiteur sur-mesure, carte de bar adaptée."
