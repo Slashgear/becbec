@@ -65,6 +65,20 @@ import site from '../data/site.yaml';
               <span class="badge">Bar</span>
             </div>
           </div>
+          {site.agenda?.active && site.agenda.events?.length > 0 && (
+            <div class="agenda-card">
+              <h2 class="agenda-card-title">Agenda</h2>
+              <ul class="agenda-card-list" role="list">
+                {site.agenda.events.slice(0, 3).map((e: { title: string; date: string; time: string; note?: string }) => (
+                  <li class="agenda-card-item">
+                    <span class="agenda-card-date">{e.date}{e.time ? ` — ${e.time}` : ''}</span>
+                    <span class="agenda-card-name">{e.title}</span>
+                    {e.note && <span class="agenda-card-note">{e.note}</span>}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
           <img src="/egg.png" alt="" class="deco-egg" aria-hidden="true" />
         </section>
 
@@ -117,40 +131,6 @@ import site from '../data/site.yaml';
       </div>
 
     </main>
-
-    <!-- SECTION AGENDA -->
-    {site.agenda?.active && site.agenda.events?.length > 0 && (
-      <section class="agenda-section" id="agenda" aria-label="Agenda des événements">
-        <div class="agenda-inner">
-          <header class="agenda-header">
-            <h2 class="agenda-title">Agenda</h2>
-            <p class="agenda-sub">Nos prochaines soirées au bar — réservation par téléphone</p>
-          </header>
-
-          <ul class="agenda-grid" role="list">
-            {site.agenda.events.slice(0, 6).map((e: { title: string; date: string; time: string; note?: string }) => (
-              <li class="agenda-card">
-                <div class="agenda-card-top">
-                  <span class="agenda-card-date">{e.date}</span>
-                  <span class="agenda-card-time">{e.time}</span>
-                </div>
-                <span class="agenda-card-title">{e.title}</span>
-                {e.note && <span class="agenda-card-note">{e.note}</span>}
-              </li>
-            ))}
-          </ul>
-
-          <p class="agenda-cta">
-            <a href={`tel:${site.phone}`} class="btn btn-primary">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.79a16 16 0 0 0 6.3 6.3l.96-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
-              </svg>
-              Réserver par téléphone
-            </a>
-          </p>
-        </div>
-      </section>
-    )}
 
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
@@ -577,99 +557,70 @@ import site from '../data/site.yaml';
     white-space: nowrap;
   }
 
-  /* ── Agenda section ── */
-  .agenda-section {
-    border-top: 1px solid var(--border);
-    background: var(--bg);
-  }
-
-  .agenda-inner {
-    max-width: 1080px;
-    margin: 0 auto;
-    padding: var(--space-xl) var(--space-lg);
-  }
-
-  @media (min-width: 900px) {
-    .agenda-inner { padding: var(--space-xl); }
-  }
-
-  .agenda-header {
-    margin-bottom: var(--space-lg);
-    text-align: center;
-  }
-
-  .agenda-title {
-    font-family: var(--font-serif);
-    font-size: 1.75rem;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-  }
-
-  .agenda-sub {
-    margin-top: 0.35rem;
-    color: var(--muted);
-    font-size: 0.9rem;
-  }
-
-  .agenda-grid {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--space-md);
-  }
-
+  /* ── Agenda : carte en bas de la colonne identité ── */
   .agenda-card {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
-    padding: var(--space-md);
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
     background: var(--red-tint);
     border: 1px solid var(--red-border);
     border-radius: var(--radius);
-    flex: 1 1 300px;
-    max-width: 380px;
-    min-width: 0;
+    margin-top: auto;
   }
 
-  .agenda-card-top {
+  .agenda-card-title {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .agenda-card-list {
+    list-style: none;
     display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: var(--space-sm);
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .agenda-card-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    padding-left: var(--space-sm);
+  }
+
+  .agenda-card-item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.45em;
+    width: 5px;
+    height: 5px;
+    background: var(--red);
   }
 
   .agenda-card-date {
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     font-weight: 700;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
     color: var(--red-muted);
   }
 
-  .agenda-card-time {
-    font-size: 0.78rem;
-    color: var(--muted);
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-  }
-
-  .agenda-card-title {
+  .agenda-card-name {
     font-family: var(--font-serif);
-    font-size: 1.15rem;
+    font-size: 0.95rem;
     font-weight: 600;
     line-height: 1.3;
   }
 
   .agenda-card-note {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: var(--muted);
-    line-height: 1.5;
-  }
-
-  .agenda-cta {
-    margin-top: var(--space-lg);
-    text-align: center;
+    line-height: 1.45;
   }
 
   /* ── Contact column ── */

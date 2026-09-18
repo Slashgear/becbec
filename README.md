@@ -213,15 +213,15 @@ groupe:
 
 ---
 
-### Agenda (soirées au bar)
+### Agenda (événements & actualités au bar)
 
-L'agenda s'affiche en **section pleine largeur sous le hero** de la page d'accueil. Chaque événement devient une carte avec la date, l'heure, le titre et une courte description. En bas, un bouton **« Réserver par téléphone »** ouvre directement l'appel vers le numéro du bar.
+L'agenda s'affiche en **petite carte dans la première colonne** de la page d'accueil (sous le texte de présentation), avec une **liste à puces** des prochaines soirées et actualités du bar (blind test, anniversaire, concours, etc.). Maximum **3 événements** affichés. Chaque puce affiche, dans l'ordre : la **date**, le **titre**, puis une courte **description**.
 
-**Afficher / masquer la section :**
+**Afficher / masquer la carte :**
 
 ```yaml
 agenda:
-  active: true   # false pour cacher toute la section agenda
+  active: true   # false pour cacher toute la carte agenda
 ```
 
 **Ajouter un événement :** chaque ligne `-` sous `events:` est un événement.
@@ -230,30 +230,25 @@ agenda:
 agenda:
   active: true
   events:
-    - title: "Soirée Blind Test"
-      date: "Vendredi 25 septembre"
-      time: "20h"
-      note: "Venez tester vos connaissances musicales autour d'un verre."
-    - title: "Concert acoustique"
-      date: "Vendredi 2 octobre"
-      time: "20h30"
-      note: "Session live au coin du bar."
+    - title: "Les 2 ans du Becbec"
+      date: "Samedi 3 octobre 2026"
+      note: "Concours de pétanque, musique et animation toute la journée."
 ```
 
 Les champs :
 - `title` — le nom de l'événement (obligatoire)
-- `date` — le jour de l'événement (obligatoire)
-- `time` — l'heure (obligatoire)
+- `date` — le jour de l'événement (obligatoire). **Texte libre** : « Samedi 3 octobre 2026 », « Vendredi 25 septembre », etc. Pas de format strict à respecter.
+- `time` — l'heure (optionnel). Ex. « 20h », « Toute la journée ». Retiré si absent.
 - `note` — une courte description (optionnel, retiré si absent)
 
-**Combien d'événements afficher :**
-- **0 événement** (ou `active: false`) → la section agenda ne s'affiche pas du tout
-- **1 événement** → une seule carte, centrée sur la ligne
-- **2 événements** → deux cartes côte à côte, centrées
-- **3 événements** → trois cartes sur une ligne
-- **4 à 6 événements** → les cartes passent à la ligne suivante (maximum 6 affichées)
+> Pour rappel, les mêmes règles YAML s'appliquent qu'ailleurs dans ce fichier : textes entre guillemets, indentation à respecter (2 espaces), ligne commençant par `#` = commentaire.
 
-> Les visiteurs s'inscrivent simplement en appelant : le bouton « Réserver par téléphone » utilise automatiquement le champ `phone` du fichier. Aucun système d'inscription en ligne n'est nécessaire.
+**Combien d'événements afficher :**
+- **0 événement** (ou `active: false`) → la carte agenda ne s'affiche pas du tout
+- **1 à 3 événements** → ils s'affichent en liste à puces dans la carte
+- **4 événements et plus** → seuls les **3 premiers** sont affichés
+
+> Les visiteurs s'inscrivent simplement en appelant le bar : le numéro est visible dans l'en-tête et le pied de page. Aucun système d'inscription en ligne n'est nécessaire.
 
 ---
 
