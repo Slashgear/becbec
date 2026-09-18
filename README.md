@@ -213,6 +213,45 @@ groupe:
 
 ---
 
+### Agenda (événements & actualités au bar)
+
+L'agenda s'affiche en **petite carte dans la première colonne** de la page d'accueil (sous le texte de présentation), avec une **liste à puces** des prochaines soirées et actualités du bar (blind test, anniversaire, concours, etc.). Maximum **3 événements** affichés. Chaque puce affiche, dans l'ordre : la **date**, le **titre**, puis une courte **description**.
+
+**Afficher / masquer la carte :**
+
+```yaml
+agenda:
+  active: true   # false pour cacher toute la carte agenda
+```
+
+**Ajouter un événement :** chaque ligne `-` sous `events:` est un événement.
+
+```yaml
+agenda:
+  active: true
+  events:
+    - title: "Les 2 ans du Becbec"
+      date: "Samedi 3 octobre 2026"
+      note: "Concours de pétanque, musique et animation toute la journée."
+```
+
+Les champs :
+- `title` — le nom de l'événement (obligatoire)
+- `date` — le jour de l'événement (obligatoire). **Texte libre** : « Samedi 3 octobre 2026 », « Vendredi 25 septembre », etc. Pas de format strict à respecter.
+- `time` — l'heure (optionnel). Ex. « 20h », « Toute la journée ». Retiré si absent.
+- `note` — une courte description (optionnel, retiré si absent)
+
+> Pour rappel, les mêmes règles YAML s'appliquent qu'ailleurs dans ce fichier : textes entre guillemets, indentation à respecter (2 espaces), ligne commençant par `#` = commentaire.
+
+**Combien d'événements afficher :**
+- **0 événement** (ou `active: false`) → la carte agenda ne s'affiche pas du tout
+- **1 à 3 événements** → ils s'affichent en liste à puces dans la carte
+- **4 événements et plus** → seuls les **3 premiers** sont affichés
+
+> Les visiteurs s'inscrivent simplement en appelant le bar : le numéro est visible dans l'en-tête et le pied de page. Aucun système d'inscription en ligne n'est nécessaire.
+
+---
+
 ## Stack technique
 
 - [Astro 7](https://astro.build) — génération statique

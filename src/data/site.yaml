@@ -55,6 +55,16 @@ hours:
   - days: "Dimanche & Lundi"
     open: "Fermé"
 
+# Agenda — liste des événements à venir au bar (0 à 3 max affichés)
+# Pour s'inscrire : il suffit d'appeler et de réserver.
+agenda:
+  # active: true pour afficher le bloc agenda sur la page d'accueil
+  active: true
+  events:
+    - title: "Les 2 ans du Becbec"
+      date: "Samedi 3 octobre 2026"
+      note: "Concours de pétanque, musique et animation toute la journée."
+
 groupe:
   label: "Groupe & privatisation"
   description: "De 10 à 50 personnes, nous accueillons tous vos événements. Réservation de salle entière ou partielle, menu traiteur sur-mesure, carte de bar adaptée."
