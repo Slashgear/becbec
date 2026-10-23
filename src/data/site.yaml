@@ -1,8 +1,8 @@
 # Bannière d'information — mettre active: true pour afficher
 banner:
-  active: 
-  message: "Attention, nous réduisons nos horaires à partir du 28 juillet!"
-  description: "Jusqu'à fin août, nous serons ouverts du mardi au vendredi de 8:00 à 14:30"
+  active: true
+  message: "A partir du 1er novembre nous ouvrirons les lundis de 8:00 à 14:30"
+  description: "Réservation conseillée et bonne dalle obligatoire"
 
 name: "Becbec"
 photo: "/photo2.jpg"
