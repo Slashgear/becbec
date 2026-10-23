@@ -61,9 +61,12 @@ agenda:
   # active: true pour afficher le bloc agenda sur la page d'accueil
   active: true
   events:
-    - title: "Les 2 ans du Becbec"
-      date: "Samedi 3 octobre 2026"
-      note: "Concours de pétanque, musique et animation toute la journée."
+    - title: "Vide-dressing"
+      date: "Samedi 31 octobre 2026"
+      note: "Fripe party et pop up de la marque Not Venomous"
+    - title: "Marché de Noël de Becbec"
+      date: "Dimanche 6 décembre 2026"
+      note: "Idées cadeaux artisanales, boissons chaudes et chants de Noël"
 
 groupe:
   label: "Groupe & privatisation"
