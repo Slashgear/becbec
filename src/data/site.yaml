@@ -27,6 +27,11 @@ address:
   maps_url: "https://maps.google.com/?q=Becbec+Paul+Bert+Lyon+3"
 
 hours:
+  - days: "Lundi"
+    open: "8:00 – 14:30"
+    schema_day: "Monday"
+    schema_opens: "08:00"
+    schema_closes: "14:30"
   - days: "Mardi"
     open: "8:00 – 17:30"
     schema_day: "Tuesday"
@@ -52,7 +57,7 @@ hours:
     schema_day: "Saturday"
     schema_opens: "09:30"
     schema_closes: "14:30"
-  - days: "Dimanche & Lundi"
+  - days: "Dimanche"
     open: "Fermé"
 
 # Agenda — liste des événements à venir au bar (0 à 3 max affichés)
