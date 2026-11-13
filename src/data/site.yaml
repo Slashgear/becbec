@@ -1,7 +1,7 @@
 # Bannière d'information — mettre active: true pour afficher
 banner:
   active: true
-  message: "A partir du 1er novembre nous ouvrirons les lundis de 8:00 à 14:30"
+  message: "A partir du 1er novembre nous ouvrirons tous les lundis de 8:00 à 14:30 !"
   description: "Réservation conseillée et bonne dalle obligatoire"
 
 name: "Becbec"
@@ -66,9 +66,12 @@ agenda:
   # active: true pour afficher le bloc agenda sur la page d'accueil
   active: true
   events:
-    - title: "Vide-dressing"
-      date: "Samedi 31 octobre 2026"
-      note: "Fripe party et pop up de la marque Not Venomous"
+    - title: "Beaujolais nouveau + Blindtest"
+      date: "Jeudi 19 novembre 2026"
+      note: "Verres bien remplis et oreilles affutées !
+    - title: "Soirée jeux"
+      date: "Mercredi 25 Novembre 2026"
+      note: "Becbec se transforme en bar à jeux pour un soir"
     - title: "Marché de Noël de Becbec"
       date: "Dimanche 6 décembre 2026"
       note: "Idées cadeaux artisanales, boissons chaudes et chants de Noël"
