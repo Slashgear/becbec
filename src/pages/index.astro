@@ -8,13 +8,16 @@ const AGENDA_MAX = 3;
 // Les événements passés sont retirés au build, puis masqués côté navigateur
 // (le site est statique : il peut rester plusieurs jours sans être reconstruit).
 const today = todayInParis();
-// Mini carte OpenStreetMap : quelques tuiles OSM assemblées en CSS, sans iframe ni JS.
-// La grille fait MAP_COLS × MAP_ROWS tuiles, et le point est recentré dans le cadre.
+// Mini carte OpenStreetMap : quelques tuiles OSM placées dans un SVG, sans iframe ni JS.
+// Tout passe par des attributs SVG (x, y, viewBox) et pas par des styles inline,
+// qui seraient bloqués par la CSP en production.
 const { lat, lon } = site.address as { lat?: number; lon?: number };
 const MAP_ZOOM = 17;
 const MAP_COLS = 5;
 const MAP_ROWS = 3;
 const TILE = 256;
+const MAP_VIEW_W = 320;
+const MAP_VIEW_H = 200;
 const miniMap = (() => {
   if (!lat || !lon) return null;
   const n = 2 ** MAP_ZOOM;
@@ -26,14 +29,21 @@ const miniMap = (() => {
   const tiles = [];
   for (let row = 0; row < MAP_ROWS; row++) {
     for (let col = 0; col < MAP_COLS; col++) {
-      tiles.push(`https://tile.openstreetmap.org/${MAP_ZOOM}/${x0 + col}/${y0 + row}.png`);
+      tiles.push({
+        src: `https://tile.openstreetmap.org/${MAP_ZOOM}/${x0 + col}/${y0 + row}.png`,
+        x: col * TILE,
+        y: row * TILE,
+      });
     }
   }
+  // position du point dans la grille, en px
+  const px = Math.round((fx - x0) * TILE);
+  const py = Math.round((fy - y0) * TILE);
   return {
     tiles,
-    // position du point dans la grille, en px
-    offsetX: Math.round((fx - x0) * TILE),
-    offsetY: Math.round((fy - y0) * TILE),
+    px,
+    py,
+    viewBox: `${px - MAP_VIEW_W / 2} ${py - MAP_VIEW_H / 2} ${MAP_VIEW_W} ${MAP_VIEW_H}`,
     link: `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=18/${lat}/${lon}`,
   };
 })();
@@ -160,16 +170,24 @@ const agendaEvents = ((site.agenda?.events ?? []) as AgendaEvent[])
                 class="mini-map-frame"
                 aria-label={`Voir ${site.name}, ${site.address.street}, sur OpenStreetMap`}
               >
-                <div
-                  class="mini-map-tiles"
-                  style={`--cols: ${MAP_COLS}; left: calc(50% - ${miniMap.offsetX}px); top: calc(50% - ${miniMap.offsetY}px);`}
+                <svg
+                  class="mini-map-svg"
+                  viewBox={miniMap.viewBox}
+                  preserveAspectRatio="xMidYMid slice"
                   aria-hidden="true"
                 >
-                  {miniMap.tiles.map((src) => (
-                    <img src={src} alt="" width={TILE} height={TILE} loading="lazy" decoding="async" />
-                  ))}
-                </div>
-                <span class="mini-map-pin" aria-hidden="true"></span>
+                  <g class="mini-map-tiles">
+                    {miniMap.tiles.map((t) => (
+                      <image href={t.src} x={t.x} y={t.y} width={TILE} height={TILE} />
+                    ))}
+                  </g>
+                  <path
+                    class="mini-map-pin"
+                    transform={`translate(${miniMap.px} ${miniMap.py})`}
+                    d="M0 0C-2-6-9-10-9-17a9 9 0 0 1 18 0c0 7-7 11-9 17z"
+                  />
+                  <circle cx={miniMap.px} cy={miniMap.py - 17} r="3.2" fill="#fff" />
+                </svg>
               </a>
               <a
                 href="https://www.openstreetmap.org/copyright"
@@ -749,34 +767,23 @@ const agendaEvents = ((site.agenda?.events ?? []) as AgendaEvent[])
     background: var(--red-tint);
   }
 
+  .mini-map-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
   .mini-map-tiles {
-    position: absolute;
-    display: grid;
-    grid-template-columns: repeat(var(--cols), 256px);
     filter: saturate(0.8);
     transition: filter 0.2s;
   }
 
   .mini-map-frame:hover .mini-map-tiles { filter: none; }
 
-  .mini-map-tiles img {
-    display: block;
-    width: 256px;
-    height: 256px;
-    max-width: none;
-  }
-
   .mini-map-pin {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 18px;
-    height: 18px;
-    background: var(--red);
-    border: 2px solid #fff;
-    border-radius: 50% 50% 50% 0;
-    transform: translate(-50%, -100%) rotate(-45deg);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+    fill: var(--red);
+    stroke: #fff;
+    stroke-width: 2;
   }
 
   .mini-map-credit {
