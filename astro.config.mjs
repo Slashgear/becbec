@@ -16,7 +16,7 @@ export default defineConfig({
     csp: {
       directives: [
         "default-src 'self'",
-        "img-src 'self'",
+        "img-src 'self' https://tile.openstreetmap.org",
         "frame-src 'none'",
         "object-src 'none'",
         "base-uri 'self'",
