@@ -66,12 +66,6 @@ agenda:
   # active: true pour afficher le bloc agenda sur la page d'accueil
   active: true
   events:
-    - title: "Beaujolais nouveau + Blindtest"
-      date: "Jeudi 19 novembre 2026"
-      note: "Verres bien remplis et oreilles affutées !
-    - title: "Soirée jeux"
-      date: "Mercredi 25 Novembre 2026"
-      note: "Becbec se transforme en bar à jeux pour un soir"
     - title: "Marché de Noël de Becbec"
       date: "Dimanche 6 décembre 2026"
       note: "Idées cadeaux artisanales, boissons chaudes et chants de Noël"
