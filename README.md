@@ -237,7 +237,7 @@ agenda:
 
 Les champs :
 - `title` — le nom de l'événement (obligatoire)
-- `date` — le jour de l'événement (obligatoire). **Texte libre** : « Samedi 3 octobre 2026 », « Vendredi 25 septembre », etc. Pas de format strict à respecter.
+- `date` — le jour de l'événement (obligatoire). **Texte libre** : « Samedi 3 octobre 2026 », « 1er mai 2027 », etc. Pour que l'événement disparaisse tout seul une fois passé, écris le **jour, le mois et l'année** (« 3 octobre 2026 »). Sans année, il reste affiché jusqu'à ce que tu le retires.
 - `time` — l'heure (optionnel). Ex. « 20h », « Toute la journée ». Retiré si absent.
 - `note` — une courte description (optionnel, retiré si absent)
 
@@ -247,6 +247,8 @@ Les champs :
 - **0 événement** (ou `active: false`) → la carte agenda ne s'affiche pas du tout
 - **1 à 3 événements** → ils s'affichent en liste à puces dans la carte
 - **4 événements et plus** → seuls les **3 premiers** sont affichés
+
+**Événements passés :** ils sont masqués automatiquement dès le lendemain de leur date (heure de Paris), même si le site n'a pas été republié. Tu peux les retirer du fichier quand tu veux, ce n'est plus urgent. Si un événement passé disparaît, le suivant prend sa place dans les 3 affichés.
 
 > Les visiteurs s'inscrivent simplement en appelant le bar : le numéro est visible dans l'en-tête et le pied de page. Aucun système d'inscription en ligne n'est nécessaire.
 
