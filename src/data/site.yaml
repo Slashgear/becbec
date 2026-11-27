@@ -25,6 +25,9 @@ address:
   city: "Lyon"
   arrondissement: "03"
   maps_url: "https://maps.google.com/?q=Becbec+Paul+Bert+Lyon+3"
+  # Coordonnées GPS pour la mini carte OpenStreetMap (laisser vide pour la masquer)
+  lat: 45.75674
+  lon: 4.86574
 
 hours:
   - days: "Lundi"

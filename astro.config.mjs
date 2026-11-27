@@ -17,7 +17,7 @@ export default defineConfig({
       directives: [
         "default-src 'self'",
         "img-src 'self'",
-        "frame-src 'none'",
+        "frame-src https://www.openstreetmap.org",
         "object-src 'none'",
         "base-uri 'self'",
         "form-action 'none'",

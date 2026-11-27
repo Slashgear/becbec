@@ -8,6 +8,11 @@ const AGENDA_MAX = 3;
 // Les événements passés sont retirés au build, puis masqués côté navigateur
 // (le site est statique : il peut rester plusieurs jours sans être reconstruit).
 const today = todayInParis();
+// Mini carte OpenStreetMap (embed iframe, chargée en lazy)
+const { lat, lon } = site.address as { lat?: number; lon?: number };
+const osmEmbedUrl = lat && lon
+  ? `https://www.openstreetmap.org/export/embed.html?bbox=${(lon - 0.004).toFixed(5)}%2C${(lat - 0.002).toFixed(5)}%2C${(lon + 0.004).toFixed(5)}%2C${(lat + 0.002).toFixed(5)}&layer=mapnik&marker=${lat}%2C${lon}`
+  : null;
 const agendaEvents = ((site.agenda?.events ?? []) as AgendaEvent[])
   .map((e) => ({ ...e, iso: parseFrenchDate(e.date) }))
   .filter((e) => !e.iso || e.iso >= today);
@@ -122,6 +127,25 @@ const agendaEvents = ((site.agenda?.events ?? []) as AgendaEvent[])
             </a>
           </address>
 
+          {osmEmbedUrl && (
+            <div class="mini-map">
+              <iframe
+                src={osmEmbedUrl}
+                title={`Carte OpenStreetMap : ${site.name}, ${site.address.street}, Lyon ${site.address.arrondissement}`}
+                loading="lazy"
+                referrerpolicy="strict-origin-when-cross-origin"
+              ></iframe>
+              <a
+                href={`https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=17/${lat}/${lon}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="mini-map-credit"
+              >
+                © OpenStreetMap
+              </a>
+            </div>
+          )}
+
           <div class="contact-actions">
             <a href={`tel:${site.phone}`} class="btn btn-primary">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -160,6 +184,7 @@ const agendaEvents = ((site.agenda?.events ?? []) as AgendaEvent[])
         "postalCode": "69003",
         "addressCountry": "FR"
       },
+      ...(lat && lon ? { "geo": { "@type": "GeoCoordinates", "latitude": lat, "longitude": lon } } : {}),
       "openingHoursSpecification": site.hours
         .filter((h: { schema_day?: string }) => h.schema_day)
         .map((h: { schema_day: string; schema_opens: string; schema_closes: string }) => ({
@@ -670,6 +695,31 @@ const agendaEvents = ((site.agenda?.events ?? []) as AgendaEvent[])
   }
 
   .maps-link:hover { color: var(--text); }
+
+  .mini-map {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .mini-map iframe {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    max-height: 220px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--red-tint);
+    filter: saturate(0.85);
+  }
+
+  .mini-map-credit {
+    align-self: flex-end;
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+
+  .mini-map-credit:hover { color: var(--text); }
 
   .contact-actions {
     display: flex;
