@@ -8,11 +8,35 @@ const AGENDA_MAX = 3;
 // Les événements passés sont retirés au build, puis masqués côté navigateur
 // (le site est statique : il peut rester plusieurs jours sans être reconstruit).
 const today = todayInParis();
-// Mini carte OpenStreetMap (embed iframe, chargée en lazy)
+// Mini carte OpenStreetMap : quelques tuiles OSM assemblées en CSS, sans iframe ni JS.
+// La grille fait MAP_COLS × MAP_ROWS tuiles, et le point est recentré dans le cadre.
 const { lat, lon } = site.address as { lat?: number; lon?: number };
-const osmEmbedUrl = lat && lon
-  ? `https://www.openstreetmap.org/export/embed.html?bbox=${(lon - 0.004).toFixed(5)}%2C${(lat - 0.002).toFixed(5)}%2C${(lon + 0.004).toFixed(5)}%2C${(lat + 0.002).toFixed(5)}&layer=mapnik&marker=${lat}%2C${lon}`
-  : null;
+const MAP_ZOOM = 17;
+const MAP_COLS = 5;
+const MAP_ROWS = 3;
+const TILE = 256;
+const miniMap = (() => {
+  if (!lat || !lon) return null;
+  const n = 2 ** MAP_ZOOM;
+  const latRad = (lat * Math.PI) / 180;
+  const fx = ((lon + 180) / 360) * n;
+  const fy = ((1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI) / 2) * n;
+  const x0 = Math.floor(fx) - Math.floor(MAP_COLS / 2);
+  const y0 = Math.floor(fy) - Math.floor(MAP_ROWS / 2);
+  const tiles = [];
+  for (let row = 0; row < MAP_ROWS; row++) {
+    for (let col = 0; col < MAP_COLS; col++) {
+      tiles.push(`https://tile.openstreetmap.org/${MAP_ZOOM}/${x0 + col}/${y0 + row}.png`);
+    }
+  }
+  return {
+    tiles,
+    // position du point dans la grille, en px
+    offsetX: Math.round((fx - x0) * TILE),
+    offsetY: Math.round((fy - y0) * TILE),
+    link: `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=18/${lat}/${lon}`,
+  };
+})();
 const agendaEvents = ((site.agenda?.events ?? []) as AgendaEvent[])
   .map((e) => ({ ...e, iso: parseFrenchDate(e.date) }))
   .filter((e) => !e.iso || e.iso >= today);
@@ -127,16 +151,28 @@ const agendaEvents = ((site.agenda?.events ?? []) as AgendaEvent[])
             </a>
           </address>
 
-          {osmEmbedUrl && (
+          {miniMap && (
             <div class="mini-map">
-              <iframe
-                src={osmEmbedUrl}
-                title={`Carte OpenStreetMap : ${site.name}, ${site.address.street}, Lyon ${site.address.arrondissement}`}
-                loading="lazy"
-                referrerpolicy="strict-origin-when-cross-origin"
-              ></iframe>
               <a
-                href={`https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=17/${lat}/${lon}`}
+                href={miniMap.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="mini-map-frame"
+                aria-label={`Voir ${site.name}, ${site.address.street}, sur OpenStreetMap`}
+              >
+                <div
+                  class="mini-map-tiles"
+                  style={`--cols: ${MAP_COLS}; left: calc(50% - ${miniMap.offsetX}px); top: calc(50% - ${miniMap.offsetY}px);`}
+                  aria-hidden="true"
+                >
+                  {miniMap.tiles.map((src) => (
+                    <img src={src} alt="" width={TILE} height={TILE} loading="lazy" decoding="async" />
+                  ))}
+                </div>
+                <span class="mini-map-pin" aria-hidden="true"></span>
+              </a>
+              <a
+                href="https://www.openstreetmap.org/copyright"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="mini-map-credit"
@@ -702,15 +738,45 @@ const agendaEvents = ((site.agenda?.events ?? []) as AgendaEvent[])
     gap: 0.25rem;
   }
 
-  .mini-map iframe {
+  .mini-map-frame {
+    position: relative;
     display: block;
     width: 100%;
-    aspect-ratio: 4 / 3;
-    max-height: 220px;
+    height: 200px;
+    overflow: hidden;
     border: 1px solid var(--border);
     border-radius: var(--radius);
     background: var(--red-tint);
-    filter: saturate(0.85);
+  }
+
+  .mini-map-tiles {
+    position: absolute;
+    display: grid;
+    grid-template-columns: repeat(var(--cols), 256px);
+    filter: saturate(0.8);
+    transition: filter 0.2s;
+  }
+
+  .mini-map-frame:hover .mini-map-tiles { filter: none; }
+
+  .mini-map-tiles img {
+    display: block;
+    width: 256px;
+    height: 256px;
+    max-width: none;
+  }
+
+  .mini-map-pin {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 18px;
+    height: 18px;
+    background: var(--red);
+    border: 2px solid #fff;
+    border-radius: 50% 50% 50% 0;
+    transform: translate(-50%, -100%) rotate(-45deg);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
   }
 
   .mini-map-credit {
